@@ -1,15 +1,6 @@
 cmake_minimum_required(VERSION 4.0)
 
-
-set(CMAKE_CUDA_ARCHITECTURES native)
-set(CMAKE_CUDA_COMPILER "")
-
-if(CMAKE_CUDA_COMPILER STREQUAL "")
-    message(FATAL_ERROR "CUDA compiler not set!")
-    return()
-endif()
-
-project(fft LANGUAGES CXX CUDA)
+project(fft LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 26)
 
@@ -83,9 +74,5 @@ target_link_libraries(
 
 include(GoogleTest)
 gtest_discover_tests(fft)
-
-set_target_properties(fft PROPERTIES
-        CUDA_SEPARABLE_COMPILATION ON
-)
 
 target_compile_options(fft_benchmark PRIVATE -O3)
