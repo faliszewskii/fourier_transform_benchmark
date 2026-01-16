@@ -1,6 +1,6 @@
-# Fast Fourier Transform Benchmark
+# Fast Fourier Transform C++ Benchmark
 
-Benchmark of the following Fourier Transform implementations:
+Benchmark of the following Fourier Transform implementations in C++:
 - Readily available C/C++ FFTW library,
 - Naive DFT running in O(N^2) time,
 - Cooley Tukey Fast Fourier Transform,
