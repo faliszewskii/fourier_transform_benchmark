@@ -42,7 +42,7 @@ cd build
 make run_fft_benchmark
 ```
 
-Plotting latest benchmark results
+Plotting the latest benchmark results
 ```
 cd fourier_transform_benchmark
 cd build
