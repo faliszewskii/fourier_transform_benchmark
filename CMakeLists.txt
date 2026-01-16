@@ -2,8 +2,7 @@ cmake_minimum_required(VERSION 4.0)
 
 
 set(CMAKE_CUDA_ARCHITECTURES native)
-#set(CMAKE_CUDA_COMPILER "")
-set(CMAKE_CUDA_COMPILER /usr/local/cuda-13.1/bin/nvcc) # TODO Change to empty string
+set(CMAKE_CUDA_COMPILER "")
 
 if(CMAKE_CUDA_COMPILER STREQUAL "")
     message(FATAL_ERROR "CUDA compiler not set!")
