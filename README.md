@@ -15,8 +15,8 @@ The implementations are allowed for preinitialization of the state for a given i
 <img width="400" alt="items" src="https://github.com/user-attachments/assets/3a35e367-9e8d-4350-a0ce-c05d6a5f226a" />
 </p>
 
-The charts below show how big is the difference between the naive approach O(N^2) and Fast Foureir Transforms O(NlogN). 
-OpenMP optimization of Cooley Tukey FFT is lagging behind at the small data sizes because of thread parallelization overhead but easily overtakes classic FFT implementation coming close to the most optimized FFTW library implementation. The best approach seems to be to use single threaded implementations for small N  with parallelization beginning at N=~2^14.
+The charts above show how big is the difference between the naive approach O(N^2) and Fast Foureir Transforms O(NlogN). 
+OpenMP optimization of Cooley Tukey FFT is lagging behind at the small data sizes because of thread parallelization overhead but easily overtakes classic FFT implementation coming close to the most optimized FFTW library implementation. The best approach seems to be to use single threaded implementations for small N  with parallelization beginning at N=~2^17.
 
 
 ## Building
