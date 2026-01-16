@@ -3,7 +3,7 @@ import re
 import matplotlib.pyplot as plt
 from collections import defaultdict
 
-from python.get_latest_stamp import get_latest_stamp
+from get_latest_stamp import get_latest_stamp
 
 directory = "../benchmarks/"
 latest_benchmark = get_latest_stamp(directory)
