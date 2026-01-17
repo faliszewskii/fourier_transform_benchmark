@@ -10,9 +10,16 @@ class OpenMpCooleyTukeyFFT {
     using Complex = std::complex<Vt>;
     static constexpr Vt pi = std::numbers::pi_v<Vt>;
 public:
-    OpenMpCooleyTukeyFFT(std::span<const std::complex<Vt>> input, std::span<std::complex<Vt>> output): _input(input), _output(output) {
+    OpenMpCooleyTukeyFFT(std::span<const Complex> input, std::span<Complex> output): _input(input), _output(output) {
         const size_t N = input.size();
         assert((N & N-1) == 0); // Assert that N is power of 2.
+
+        _weights.resize(N/2);
+        #pragma omp parallel for schedule(static) default(none) shared(_weights, N)
+        for (int i = 0; i < N/2; ++i) {
+            auto angle = -2 * pi * i / N;
+            _weights[i] =  Complex(cos(angle), sin(angle));
+        }
     }
 
     void execute() {
@@ -29,15 +36,13 @@ public:
             const int groupSize = N / groupCount;
             const int jump = groupSize / 2;
 
-            #pragma omp parallel for schedule(static) default(none) shared(_output, N, groupCount, groupSize, jump)
+            #pragma omp parallel for schedule(static) default(none) shared(_output, _weights, N, groupCount, groupSize, jump)
             for (int n = 0; n < N/2; ++n) {
                 int group = n / (groupSize/2);
                 int node = n % (groupSize/2);
-                auto angle = -2 * pi * node / groupSize;
-                auto w =  Complex(cos(angle), sin(angle));
                 int k = group * groupSize + node;
-                auto u = _output[k];
-                auto t = w * _output[k + jump];
+                Complex u = _output[k];
+                Complex t = _weights[node*groupCount] * _output[k + jump];
                 _output[k] = u + t;
                 _output[k + jump] = u - t;
             }
@@ -54,6 +59,7 @@ private:
         return r;
     }
 
-    std::span<const std::complex<Vt>> _input;
-    std::span<std::complex<Vt>> _output;
+    std::span<const Complex> _input;
+    std::span<Complex> _output;
+    std::vector<Complex> _weights{};
 };
