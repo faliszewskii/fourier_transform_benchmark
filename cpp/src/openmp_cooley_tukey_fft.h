@@ -4,6 +4,9 @@
 
 template<std::floating_point Vt>
 class OpenMpCooleyTukeyFFT {
+#ifndef _OPENMP
+    static_assert(sizeof(Vt) > 0, "OpenMpCooleyTukeyFFT requires OpenMP. Compile with -fopenmp.");
+#endif
     using Complex = std::complex<Vt>;
     static constexpr Vt pi = std::numbers::pi_v<Vt>;
 public:
