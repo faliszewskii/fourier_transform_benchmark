@@ -5,6 +5,7 @@ Benchmark of the following Fourier Transform implementations in C++:
 - Naive DFT running in O(N^2) time,
 - Cooley Tukey Fast Fourier Transform,
 - Cooley Tukey FFT with OpenMP multithreaded optimization.
+- Nvidia cuFFT library
 
 The implementations are allowed for preinitialization of the state for a given input size (called a plan) and then tested for the plan's execution time and throughput.
 The following benchmark was performed on 4 byte float type.
@@ -12,12 +13,15 @@ The following benchmark was performed on 4 byte float type.
 ## Results
 
 <p float="left">
-<img width="400" alt="time" src="https://github.com/user-attachments/assets/3b00f20e-2641-4e96-899e-d9e35016bf81" />
-<img width="400" alt="items" src="https://github.com/user-attachments/assets/e436f29d-452f-49cd-8420-200155007b42" />
+  <img height="350" alt="time" src="https://github.com/user-attachments/assets/cad259dd-6717-40d1-a6bd-22d0a63f9d23" />
+  <img height="350" alt="items" src="https://github.com/user-attachments/assets/e0732862-907e-4b09-8487-795971f4a6ad" />
 </p>
 
-The charts above show how big is the difference between the naive approach O(N^2) and Fast Foureir Transforms O(NlogN). 
-OpenMP optimization of Cooley Tukey FFT is lagging behind at the small data sizes because of thread parallelization overhead but easily overtakes classic FFT implementation coming close to the most optimized FFTW library implementation. The best approach seems to be to use single threaded implementations for small N  with parallelization beginning at N=~2^16.
+The charts above show how big is the difference between the naive approach O(N^2) and Fast Fourier Transforms O(NlogN). 
+
+OpenMP optimization of Cooley Tukey FFT is lagging behind at the small data sizes because of thread parallelization overhead but easily overtakes classic FFT implementation coming close to the most optimized FFTW library implementation. The best approach seems to be a hybrid approach using single threaded implementations for small N  with parallelization beginning at N=~2^16.
+
+The same logic applies to cuFFT library altough it performs much better than FFTW with benchmark showing it nearing O(N) time. 
 
 ## Hardware and system configuration
 
@@ -27,10 +31,10 @@ OpenMP optimization of Cooley Tukey FFT is lagging behind at the small data size
 - Thread(s) per core:          2
 - CPU max MHz:                 4900.0000
 - Caches (sum of all):         
-- - L1d:                       416 KiB (10 instances)
-- - L1i:                       448 KiB (10 instances)
-- - L2:                        9.5 MiB (7 instances)
-- - L3:                        24 MiB (1 instance)
+  - L1d:                       416 KiB (10 instances)
+  - L1i:                       448 KiB (10 instances)
+  - L2:                        9.5 MiB (7 instances)
+  - L3:                        24 MiB (1 instance)
 - RAM size:                    2x16Gi
 - RAM speed:                   5600 MT/s
 - OS:                          Ubuntu 24.04.3 LTS
