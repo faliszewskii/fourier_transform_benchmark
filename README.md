@@ -87,7 +87,8 @@ python ../python/plot_benchmark.py
       - `fftw_wrapper.h`
       - `naive_dft.h`
       - `cooley_tukey_fft.h`
-      - `openmp_cooley_tukey_fft.h`   
+      - `openmp_cooley_tukey_fft.h`
+      - `cu_fft.cuh`
     - `tests` - GTests for correctness and Google Benchmark for performance
       - `ft_analytical_tests.cpp` - Correctness tests based on analytical properties of Fourier Transform.    
       - `ft_performance_tests.cpp` - Performance tests for random input.
