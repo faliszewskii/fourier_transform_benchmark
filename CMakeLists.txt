@@ -4,6 +4,8 @@ project(fft LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 26)
 
+set(CMAKE_CUDA_COMPILER "")
+
 include(FetchContent)
 FetchContent_Declare(
         googletest
@@ -35,12 +37,26 @@ add_executable(
         cpp/src/naive_dft.h
         cpp/src/openmp_cooley_tukey_fft.h
         cpp/tests/ft_random_tests.cpp
+        cpp/src/cu_fft.cuh
 )
 
 add_executable(
         fft_benchmark
         cpp/tests/ft_performance_tests.cpp
 )
+
+
+include(CheckLanguage)
+check_language(CUDA)
+if(CMAKE_CUDA_COMPILER)
+    set(CMAKE_CUDA_ARCHITECTURES native)
+    enable_language(CUDA)
+    find_package(CUDAToolkit)
+    target_link_libraries(fft PRIVATE CUDA::cudart CUDA::cuda_driver CUDA::cufft)
+    target_link_libraries(fft_benchmark PRIVATE CUDA::cudart CUDA::cuda_driver CUDA::cufft)
+else()
+    message(FATAL_ERROR "No CUDA compiler found")
+endif()
 
 string(TIMESTAMP TIME "%Y%m%dT%H%M%SZ")
 add_custom_target(run_fft_benchmark
@@ -61,6 +77,7 @@ target_link_libraries(
         GTest::gtest_main
         pthread
         fftw3
+        fftw3f
 )
 
 target_link_libraries(
@@ -70,6 +87,7 @@ target_link_libraries(
         benchmark::benchmark
         pthread
         fftw3
+        fftw3f
 )
 
 include(GoogleTest)

@@ -36,7 +36,7 @@ TYPED_TEST_P(FourierTransformRandomTest, RandomTest) {
     TypeParam::compute2(input, output2);
 
     for (int k = 0; k < N; ++k)
-        ExpectComplexNear(output1[k], output2[k]);
+        ExpectComplexNear(output1[k], output2[k], TypeParam::tolerance);
 }
 
 REGISTER_TYPED_TEST_SUITE_P(
@@ -44,10 +44,11 @@ REGISTER_TYPED_TEST_SUITE_P(
     RandomTest
 );
 
+static constexpr double DOUBLE_TOL = std::numeric_limits<double>::epsilon() * 1000000;
 using FFTImplementations = ::testing::Types<
-    FourierTransformComparisonBackend<NaiveDFT<double>, FftwWrapper, double>,
-    FourierTransformComparisonBackend<CooleyTukeyFFT<double>, FftwWrapper, double>,
-    FourierTransformComparisonBackend<OpenMpCooleyTukeyFFT<double>, FftwWrapper, double>
+    FourierTransformComparisonBackend<NaiveDFT<double>, FftwWrapper<double>, double, DOUBLE_TOL>,
+    FourierTransformComparisonBackend<CooleyTukeyFFT<double>, FftwWrapper<double>, double, DOUBLE_TOL>,
+    FourierTransformComparisonBackend<OpenMpCooleyTukeyFFT<double>, FftwWrapper<double>, double, DOUBLE_TOL>
 >;
 
 

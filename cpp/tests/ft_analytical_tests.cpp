@@ -7,6 +7,7 @@
 #include "../src/fftw_wrapper.h"
 #include "../src/naive_dft.h"
 #include "../src/cooley_tukey_fft.h"
+#include "../src/cu_fft.cuh"
 #include "../src/openmp_cooley_tukey_fft.h"
 
 template <typename Backend>
@@ -24,7 +25,7 @@ TYPED_TEST_P(FourierTransformAnalyticalTest, ZeroSignal) {
     TypeParam::compute(input, output);
 
     for (int k = 0; k < N; ++k)
-        ExpectComplexNear(output[k], {0.0, 0.0});
+        ExpectComplexNear(output[k], {0.0, 0.0}, TypeParam::tolerance);
 }
 
 TYPED_TEST_P(FourierTransformAnalyticalTest, UnitImpulse) {
@@ -38,7 +39,7 @@ TYPED_TEST_P(FourierTransformAnalyticalTest, UnitImpulse) {
     TypeParam::compute(input, output);
 
     for (int k = 0; k < N; ++k)
-        ExpectComplexNear(output[k], {1.0, 0.0});
+        ExpectComplexNear(output[k], {1.0, 0.0}, TypeParam::tolerance);
 }
 
 TYPED_TEST_P(FourierTransformAnalyticalTest, ConstantSignal) {
@@ -51,10 +52,10 @@ TYPED_TEST_P(FourierTransformAnalyticalTest, ConstantSignal) {
     std::vector output(N, Complex(0.0, 0.0));
     TypeParam::compute(input, output);
 
-    ExpectComplexNear(output[0], {N * C, 0.0});
+    ExpectComplexNear(output[0], {N * C, 0.0}, TypeParam::tolerance);
 
     for (int k = 1; k < N; ++k)
-        ExpectComplexNear(output[k], {0.0, 0.0});
+        ExpectComplexNear(output[k], {0.0, 0.0}, TypeParam::tolerance);
 }
 
 TYPED_TEST_P(FourierTransformAnalyticalTest, BinAlignedCosine) {
@@ -69,12 +70,12 @@ TYPED_TEST_P(FourierTransformAnalyticalTest, BinAlignedCosine) {
     std::vector output(N, Complex(0.0, 0.0));
     TypeParam::compute(input, output);
 
-    ExpectComplexNear(output[k],     {N / 2.0, 0.0});
-    ExpectComplexNear(output[N - k], {N / 2.0, 0.0});
+    ExpectComplexNear(output[k],     {N / 2.0, 0.0}, TypeParam::tolerance);
+    ExpectComplexNear(output[N - k], {N / 2.0, 0.0}, TypeParam::tolerance);
 
     for (int i = 0; i < N; ++i) {
         if (i != k && i != N - k)
-            EXPECT_NEAR(std::abs(output[i]), 0.0, TOL);
+            EXPECT_NEAR(std::abs(output[i]), 0.0, TypeParam::tolerance);
     }
 }
 
@@ -90,12 +91,12 @@ TYPED_TEST_P(FourierTransformAnalyticalTest, BinAlignedSine) {
     std::vector output(N, Complex(0.0, 0.0));
     TypeParam::compute(input, output);
 
-    ExpectComplexNear(output[k],     {0.0, -N / 2.0});
-    ExpectComplexNear(output[N - k], {0.0,  N / 2.0});
+    ExpectComplexNear(output[k],     {0.0, -N / 2.0}, TypeParam::tolerance);
+    ExpectComplexNear(output[N - k], {0.0,  N / 2.0}, TypeParam::tolerance);
 
     for (int i = 0; i < N; ++i) {
         if (i != k && i != N - k)
-            EXPECT_NEAR(std::abs(output[i]), 0.0, TOL);
+            EXPECT_NEAR(std::abs(output[i]), 0.0, TypeParam::tolerance);
     }
 }
 
@@ -111,11 +112,11 @@ TYPED_TEST_P(FourierTransformAnalyticalTest, NyquistFrequency) {
     std::vector output(N, Complex(0.0, 0.0));
     TypeParam::compute(input, output);
 
-    ExpectComplexNear(output[N / 2], {N, 0.0});
+    ExpectComplexNear(output[N / 2], {N, 0.0}, TypeParam::tolerance);
 
     for (int k = 0; k < N; ++k) {
         if (k != N / 2)
-            ExpectComplexNear(output[k], {0.0, 0.0});
+            ExpectComplexNear(output[k], {0.0, 0.0}, TypeParam::tolerance);
     }
 }
 
@@ -138,7 +139,7 @@ TYPED_TEST_P(FourierTransformAnalyticalTest, CircularEvenSymmetryRealSpectrum) {
     TypeParam::compute(input, output);
 
     for (int k = 0; k < N; ++k)
-        EXPECT_NEAR(output[k].imag(), 0.0, TOL);
+        EXPECT_NEAR(output[k].imag(), 0.0, TypeParam::tolerance);
 }
 
 
@@ -157,7 +158,7 @@ TYPED_TEST_P(FourierTransformAnalyticalTest, OddSymmetryImagSpectrum) {
     TypeParam::compute(input, output);
 
     for (int k = 0; k < N; ++k)
-        EXPECT_NEAR(output[k].real(), 0.0, TOL);
+        EXPECT_NEAR(output[k].real(), 0.0, TypeParam::tolerance);
 }
 
 TYPED_TEST_P(FourierTransformAnalyticalTest, SimpleSignal) {
@@ -177,14 +178,14 @@ TYPED_TEST_P(FourierTransformAnalyticalTest, SimpleSignal) {
     std::vector output(N, Complex(0.0, 0.0));
     TypeParam::compute(input, output);
 
-    EXPECT_NEAR(output[0].real(), 8, TOL);
-    EXPECT_NEAR(output[1].real(), 0, TOL);
-    EXPECT_NEAR(output[2].real(), 4, TOL);
-    EXPECT_NEAR(output[3].real(), 0, TOL);
-    EXPECT_NEAR(output[4].real(), 0, TOL);
-    EXPECT_NEAR(output[5].real(), 0, TOL);
-    EXPECT_NEAR(output[6].real(), 4, TOL);
-    EXPECT_NEAR(output[7].real(), 0, TOL);
+    EXPECT_NEAR(output[0].real(), 8, TypeParam::tolerance);
+    EXPECT_NEAR(output[1].real(), 0, TypeParam::tolerance);
+    EXPECT_NEAR(output[2].real(), 4, TypeParam::tolerance);
+    EXPECT_NEAR(output[3].real(), 0, TypeParam::tolerance);
+    EXPECT_NEAR(output[4].real(), 0, TypeParam::tolerance);
+    EXPECT_NEAR(output[5].real(), 0, TypeParam::tolerance);
+    EXPECT_NEAR(output[6].real(), 4, TypeParam::tolerance);
+    EXPECT_NEAR(output[7].real(), 0, TypeParam::tolerance);
 }
 
 REGISTER_TYPED_TEST_SUITE_P(
@@ -200,11 +201,19 @@ REGISTER_TYPED_TEST_SUITE_P(
     SimpleSignal
 );
 
+static constexpr float FLOAT_TOL = std::numeric_limits<float>::epsilon() * 10000;
+static constexpr double DOUBLE_TOL = std::numeric_limits<double>::epsilon() * 10000;
 using FFTImplementations = ::testing::Types<
-    FourierTransformBackend<FftwWrapper, double>,
-    FourierTransformBackend<NaiveDFT<double>, double>,
-    FourierTransformBackend<CooleyTukeyFFT<double>, double>,
-    FourierTransformBackend<OpenMpCooleyTukeyFFT<double>, double>
+    FourierTransformBackend<FftwWrapper<double>, double, DOUBLE_TOL>,
+    FourierTransformBackend<NaiveDFT<double>, double, DOUBLE_TOL>,
+    FourierTransformBackend<CooleyTukeyFFT<double>, double, DOUBLE_TOL>,
+    FourierTransformBackend<OpenMpCooleyTukeyFFT<double>, double, DOUBLE_TOL>,
+    FourierTransformBackend<CuFFTWrapper<double>, double, DOUBLE_TOL>,
+    FourierTransformBackend<FftwWrapper<float>, float, FLOAT_TOL>,
+    FourierTransformBackend<NaiveDFT<float>, float, FLOAT_TOL>,
+    FourierTransformBackend<CooleyTukeyFFT<float>, float, FLOAT_TOL>,
+    FourierTransformBackend<OpenMpCooleyTukeyFFT<float>, float, FLOAT_TOL>,
+    FourierTransformBackend<CuFFTWrapper<float>, float, FLOAT_TOL>
 >;
 
 

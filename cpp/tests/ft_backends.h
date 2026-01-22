@@ -1,9 +1,11 @@
 #pragma once
 #include <complex>
 #include "test_utils.h"
+#include "../src/fourier_transform.h"
 
-template <typename FTImpl, std::floating_point Vt>
+template <typename FTImpl, ft_data_type Vt, Vt TOL>
 struct FourierTransformBackend {
+    static constexpr Vt tolerance = TOL;
     using value_type = Vt;
     static void compute(const std::span<std::complex<Vt>> input,
                         std::span<std::complex<Vt>> output) {
@@ -12,8 +14,9 @@ struct FourierTransformBackend {
     }
 };
 
-template <typename FTImpl1, typename FTImpl2, std::floating_point Vt>
+template <typename FTImpl1, typename FTImpl2, ft_data_type Vt, Vt TOL>
 struct FourierTransformComparisonBackend {
+    static constexpr Vt tolerance = TOL;
     using value_type = Vt;
     static void compute1(const std::span<std::complex<Vt>> input,
                         std::span<std::complex<Vt>> output) {

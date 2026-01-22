@@ -27,8 +27,8 @@ for b in benchmarks:
 
     family = m.group(1)
     family = (family
-              .replace("BM_FourierTransform_BigExample<double, ", "")
-              .replace("<double>>", "")
+              .replace("BM_FourierTransform_BigExample<float, ", "")
+              .replace("<float>>", "")
               .replace(">", ""))
     N = int(m.group(2))
 
@@ -50,16 +50,20 @@ for family, points in series.items():
     plt.plot(
         Ns,
         times,
+        markersize=4,
         marker="o",
         linestyle="--",
         label=family
     )
 
 plt.xscale("log", base=2)
-plt.yscale("log")
+plt.yscale("log", base=2)
+plt.locator_params(axis='y', numticks=30)
+plt.locator_params(axis='x', numticks=30)
 plt.xlabel("FT size (N)")
 plt.ylabel("Time per FT (µs)")
-plt.title("FT Scaling Comparison")
+plt.title("FT Time Complexity")
+plt.axis("equal")
 plt.legend()
 plt.grid(True)
 
@@ -77,6 +81,7 @@ for family, points in series.items():
     plt.plot(
         Ns,
         items,
+        markersize=4,
         marker="o",
         linestyle="--",
         label=family
@@ -86,6 +91,7 @@ plt.xscale("log", base=2)
 plt.yscale("log")
 plt.xlabel("FT size (N)")
 plt.ylabel("Items per second")
+plt.locator_params(axis='x', numticks=20)
 plt.title("FT Throughput")
 plt.legend()
 plt.grid(True)

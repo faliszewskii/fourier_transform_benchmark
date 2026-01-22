@@ -2,7 +2,7 @@
 #include <complex>
 #include <cassert>
 
-template<std::floating_point Vt>
+template<ft_data_type Vt>
 class CooleyTukeyFFT {
     using Complex = std::complex<Vt>;
     static constexpr Vt pi = std::numbers::pi_v<Vt>;

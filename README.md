@@ -6,7 +6,8 @@ Benchmark of the following Fourier Transform implementations in C++:
 - Cooley Tukey Fast Fourier Transform,
 - Cooley Tukey FFT with OpenMP multithreaded optimization.
 
-The implementations are allowed for preinitialization of the state for a given input size (called a plan) and then tested for the plan's execution time and throughput for different random input data.
+The implementations are allowed for preinitialization of the state for a given input size (called a plan) and then tested for the plan's execution time and throughput.
+The following benchmark was performed on 4 byte float type.
 
 ## Results
 

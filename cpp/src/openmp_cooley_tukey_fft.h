@@ -2,7 +2,7 @@
 #include <cassert>
 #include <complex>
 
-template<std::floating_point Vt>
+template<ft_data_type Vt>
 class OpenMpCooleyTukeyFFT {
 #ifndef _OPENMP
     static_assert(sizeof(Vt) == 0, "OpenMpCooleyTukeyFFT requires OpenMP. Compile with -fopenmp.");
