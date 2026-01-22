@@ -13,8 +13,8 @@ The following benchmark was performed on 4 byte float type.
 ## Results
 
 <p float="left">
-  <img height="350" alt="time" src="https://github.com/user-attachments/assets/cad259dd-6717-40d1-a6bd-22d0a63f9d23" />
-  <img height="350" alt="items" src="https://github.com/user-attachments/assets/e0732862-907e-4b09-8487-795971f4a6ad" />
+  <img height="300" alt="time" src="https://github.com/user-attachments/assets/cad259dd-6717-40d1-a6bd-22d0a63f9d23" />
+  <img height="300" alt="items" src="https://github.com/user-attachments/assets/e0732862-907e-4b09-8487-795971f4a6ad" />
 </p>
 
 The charts above show how big is the difference between the naive approach O(N^2) and Fast Fourier Transforms O(NlogN). 
