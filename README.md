@@ -35,6 +35,7 @@ The same logic applies to cuFFT library altough it performs much better than FFT
   - L1i:                       448 KiB (10 instances)
   - L2:                        9.5 MiB (7 instances)
   - L3:                        24 MiB (1 instance)
+- GPU Model name:              NVIDIA GeForce RTX 4060 Laptop GPU
 - RAM size:                    2x16Gi
 - RAM speed:                   5600 MT/s
 - OS:                          Ubuntu 24.04.3 LTS
