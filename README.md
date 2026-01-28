@@ -1,10 +1,11 @@
 # Fast Fourier Transform C++ Benchmark
 
 Benchmark of the following Fourier Transform implementations in C++:
-- Readily available C/C++ FFTW library,
+- C/C++ FFTW library,
 - Naive DFT running in O(N^2) time,
 - Cooley Tukey Fast Fourier Transform,
 - Cooley Tukey FFT with OpenMP multithreaded optimization.
+- Cooley Tukey FFT CUDA implementation
 - Nvidia cuFFT library
 
 The implementations are allowed for preinitialization of the state for a given input size (called a plan) and then tested for the plan's execution time and throughput.
