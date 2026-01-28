@@ -7,6 +7,7 @@
 #include "../src/fftw_wrapper.h"
 #include "../src/naive_dft.h"
 #include "../src/cooley_tukey_fft.h"
+#include "../src/cuda_cooley_tukey.h"
 #include "../src/cu_fft.cuh"
 #include "../src/fourier_transform.h"
 #include "../src/openmp_cooley_tukey_fft.h"
@@ -39,14 +40,9 @@ static void BM_FourierTransform_BigExample(benchmark::State& state)
     );
 }
 
-BENCHMARK_TEMPLATE(BM_FourierTransform_BigExample, float, FftwWrapper<float>)
-    ->RangeMultiplier(2)
-    ->Range(1 << 4, 1 << 26)
-    ->Unit(benchmark::kMicrosecond);
-
 BENCHMARK_TEMPLATE(BM_FourierTransform_BigExample, float, NaiveDFT<float>)
     ->RangeMultiplier(2)
-    ->Range(1 << 4, 1 << 14)
+    ->Range(1 << 4, 1 << 15)
     ->Unit(benchmark::kMicrosecond);
 
 BENCHMARK_TEMPLATE(BM_FourierTransform_BigExample, float, CooleyTukeyFFT<float>)
@@ -54,14 +50,24 @@ BENCHMARK_TEMPLATE(BM_FourierTransform_BigExample, float, CooleyTukeyFFT<float>)
     ->Range(1 << 4, 1 << 26)
     ->Unit(benchmark::kMicrosecond);
 
+BENCHMARK_TEMPLATE(BM_FourierTransform_BigExample, float, FftwWrapper<float>)
+    ->RangeMultiplier(2)
+    ->Range(1 << 4, 1 << 28)
+    ->Unit(benchmark::kMicrosecond);
+
 BENCHMARK_TEMPLATE(BM_FourierTransform_BigExample, float, OpenMpCooleyTukeyFFT<float>)
     ->RangeMultiplier(2)
-    ->Range(1 << 4, 1 << 26)
+    ->Range(1 << 4, 1 << 28)
+    ->Unit(benchmark::kMicrosecond);
+
+BENCHMARK_TEMPLATE(BM_FourierTransform_BigExample, float, CudaCooleyTukeyFFT<float>)
+    ->RangeMultiplier(2)
+    ->Range(1 << 4, 1 << 28)
     ->Unit(benchmark::kMicrosecond);
 
 BENCHMARK_TEMPLATE(BM_FourierTransform_BigExample, float, CuFFTWrapper<float>)
     ->RangeMultiplier(2)
-    ->Range(1 << 4, 1 << 26)
+    ->Range(1 << 4, 1 << 28)
     ->Unit(benchmark::kMicrosecond);
 
 BENCHMARK_MAIN();

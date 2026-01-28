@@ -21,7 +21,7 @@ The charts above show how big is the difference between the naive approach O(N^2
 
 OpenMP optimization of Cooley Tukey FFT is lagging behind at the small data sizes because of thread parallelization overhead but easily overtakes classic FFT implementation coming close to the most optimized FFTW library implementation. The best approach seems to be a hybrid approach using single threaded implementations for small N  with parallelization beginning at N=~2^16.
 
-The same logic applies to cuFFT library altough it performs much better than FFTW with benchmark showing it nearing O(N) time. 
+The same logic applies to cuFFT library, although it performs much better than FFTW with benchmark showing it nearing O(N) time. 
 
 ## Hardware and system configuration
 

@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 4.0)
 
+set(CMAKE_CUDA_ARCHITECTURES native)
+set(CMAKE_CUDA_COMPILER "")
+
 project(fft LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 26)
 
-set(CMAKE_CUDA_COMPILER "")
 
 include(FetchContent)
 FetchContent_Declare(
@@ -38,11 +40,14 @@ add_executable(
         cpp/src/openmp_cooley_tukey_fft.h
         cpp/tests/ft_random_tests.cpp
         cpp/src/cu_fft.cuh
+        cpp/src/cuda_cooley_tukey.h
+        cpp/src/cuda_cooley_tukey_device.cu
 )
 
 add_executable(
         fft_benchmark
         cpp/tests/ft_performance_tests.cpp
+        cpp/src/cuda_cooley_tukey_device.cu
 )
 
 

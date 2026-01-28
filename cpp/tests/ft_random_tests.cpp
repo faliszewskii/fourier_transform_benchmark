@@ -8,6 +8,7 @@
 #include "../src/fftw_wrapper.h"
 #include "../src/naive_dft.h"
 #include "../src/cooley_tukey_fft.h"
+#include "../src/cuda_cooley_tukey.h"
 #include "../src/openmp_cooley_tukey_fft.h"
 
 template <typename Backend>
@@ -48,7 +49,8 @@ static constexpr double DOUBLE_TOL = std::numeric_limits<double>::epsilon() * 10
 using FFTImplementations = ::testing::Types<
     FourierTransformComparisonBackend<NaiveDFT<double>, FftwWrapper<double>, double, DOUBLE_TOL>,
     FourierTransformComparisonBackend<CooleyTukeyFFT<double>, FftwWrapper<double>, double, DOUBLE_TOL>,
-    FourierTransformComparisonBackend<OpenMpCooleyTukeyFFT<double>, FftwWrapper<double>, double, DOUBLE_TOL>
+    FourierTransformComparisonBackend<OpenMpCooleyTukeyFFT<double>, FftwWrapper<double>, double, DOUBLE_TOL>,
+    FourierTransformComparisonBackend<CudaCooleyTukeyFFT<double>, FftwWrapper<double>, double, DOUBLE_TOL>
 >;
 
 

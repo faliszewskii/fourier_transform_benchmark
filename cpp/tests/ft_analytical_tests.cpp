@@ -9,6 +9,7 @@
 #include "../src/cooley_tukey_fft.h"
 #include "../src/cu_fft.cuh"
 #include "../src/openmp_cooley_tukey_fft.h"
+#include "../src/cuda_cooley_tukey.h"
 
 template <typename Backend>
 class FourierTransformAnalyticalTest : public testing::Test {};
@@ -209,11 +210,13 @@ using FFTImplementations = ::testing::Types<
     FourierTransformBackend<CooleyTukeyFFT<double>, double, DOUBLE_TOL>,
     FourierTransformBackend<OpenMpCooleyTukeyFFT<double>, double, DOUBLE_TOL>,
     FourierTransformBackend<CuFFTWrapper<double>, double, DOUBLE_TOL>,
+    FourierTransformBackend<CudaCooleyTukeyFFT<double>, double, DOUBLE_TOL>,
     FourierTransformBackend<FftwWrapper<float>, float, FLOAT_TOL>,
     FourierTransformBackend<NaiveDFT<float>, float, FLOAT_TOL>,
     FourierTransformBackend<CooleyTukeyFFT<float>, float, FLOAT_TOL>,
     FourierTransformBackend<OpenMpCooleyTukeyFFT<float>, float, FLOAT_TOL>,
-    FourierTransformBackend<CuFFTWrapper<float>, float, FLOAT_TOL>
+    FourierTransformBackend<CuFFTWrapper<float>, float, FLOAT_TOL>,
+    FourierTransformBackend<CudaCooleyTukeyFFT<float>, float, FLOAT_TOL>
 >;
 
 
