@@ -39,15 +39,15 @@ add_executable(
         cpp/src/naive_dft.h
         cpp/src/openmp_cooley_tukey_fft.h
         cpp/tests/ft_random_tests.cpp
-        cpp/src/cu_fft.cuh
-        cpp/src/cuda_cooley_tukey.h
-        cpp/src/cuda_cooley_tukey_device.cu
+        cpp/src/cuda/cu_fft.cuh
+        cpp/src/cuda/cuda_cooley_tukey.h
+        cpp/src/cuda/cuda_cooley_tukey_device.cu
 )
 
 add_executable(
         fft_benchmark
         cpp/tests/ft_performance_tests.cpp
-        cpp/src/cuda_cooley_tukey_device.cu
+        cpp/src/cuda/cuda_cooley_tukey_device.cu
 )
 
 

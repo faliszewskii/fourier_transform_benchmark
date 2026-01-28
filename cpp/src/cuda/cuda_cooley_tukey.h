@@ -3,7 +3,7 @@
 #include <cuda_runtime.h>
 #include <complex>
 #include <vector>
-#include "fourier_transform.h"
+#include "../fourier_transform.h"
 #include "cuda_cooley_tukey_device.cuh"
 
 template<ft_data_type Vt>

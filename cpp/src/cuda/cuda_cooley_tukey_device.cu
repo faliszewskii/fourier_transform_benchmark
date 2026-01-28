@@ -1,6 +1,6 @@
 #include <cuda_runtime.h>
 #include <math_constants.h>
-#include "cuda_cooley_tukey_device.cuh"
+#include "../cuda/cuda_cooley_tukey_device.cuh"
 
 namespace CudaCT {
 

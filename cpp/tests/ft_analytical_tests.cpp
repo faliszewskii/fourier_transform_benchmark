@@ -7,9 +7,9 @@
 #include "../src/fftw_wrapper.h"
 #include "../src/naive_dft.h"
 #include "../src/cooley_tukey_fft.h"
-#include "../src/cu_fft.cuh"
+#include "../src/cuda/cu_fft.cuh"
 #include "../src/openmp_cooley_tukey_fft.h"
-#include "../src/cuda_cooley_tukey.h"
+#include "../src/cuda/cuda_cooley_tukey.h"
 
 template <typename Backend>
 class FourierTransformAnalyticalTest : public testing::Test {};
