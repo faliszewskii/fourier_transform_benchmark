@@ -8,20 +8,25 @@ Benchmark of the following Fourier Transform implementations in C++:
 - Nvidia cuFFT library
 
 The implementations are allowed for preinitialization of the state for a given input size (called a plan) and then tested for the plan's execution time and throughput.
-The following benchmark was performed on 4 byte float type.
+The following benchmark was performed on 4 byte float type. 
+Times for GPU implementations include copying data to and from the device.
 
 ## Results
 
 <p float="left">
-  <img height="300" alt="time" src="https://github.com/user-attachments/assets/cad259dd-6717-40d1-a6bd-22d0a63f9d23" />
-  <img height="300" alt="items" src="https://github.com/user-attachments/assets/e0732862-907e-4b09-8487-795971f4a6ad" />
+  <img height="380" alt="time" src="https://github.com/user-attachments/assets/cb98bfd9-de82-4c8a-8510-a678c52539a2" />
+<img height="380" alt="items" src="https://github.com/user-attachments/assets/c8ed5d8e-c128-4675-be3f-b3febe742814" />
 </p>
 
 The charts above show how big is the difference between the naive approach O(N^2) and Fast Fourier Transforms O(NlogN). 
 
 OpenMP optimization of Cooley Tukey FFT is lagging behind at the small data sizes because of thread parallelization overhead but easily overtakes classic FFT implementation coming close to the most optimized FFTW library implementation. The best approach seems to be a hybrid approach using single threaded implementations for small N  with parallelization beginning at N=~2^16.
 
-The same logic applies to cuFFT library, although it performs much better than FFTW with benchmark showing it nearing O(N) time. 
+CUDA implementations face simillar parallelization overhead that eventually amortizes for bigger N. Even then, Cooley-Tukey implementation in CUDA is faster than OpenMP implementation with added benefit of steady data throughput on tested input size range.
+
+Nvidia cuFFT library performs the best of all implementations with benchmark showing it nearing O(N) time with constant throughput. 
+
+From the practical standpoint, based on the benchmark above the FFTW library should be used for small input sizes until the cuFFT library parallel execution becomes beneficial for the N=~2^16 crossover point.
 
 ## Hardware and system configuration
 
@@ -29,7 +34,8 @@ The same logic applies to cuFFT library, although it performs much better than F
 - CPU Model name:              13th Gen Intel(R) Core(TM) i7-13620H
 - CPUs:                        16
 - Thread(s) per core:          2
-- CPU max MHz:                 4900.0000
+- CPU max MHz:                 4900
+- Mhz per CPU:                 3517
 - Caches (sum of all):         
   - L1d:                       416 KiB (10 instances)
   - L1i:                       448 KiB (10 instances)
@@ -89,7 +95,11 @@ python ../python/plot_benchmark.py
       - `naive_dft.h`
       - `cooley_tukey_fft.h`
       - `openmp_cooley_tukey_fft.h`
-      - `cu_fft.cuh`
+      - `cuda` - CUDA FFT implementations
+        - `cu_fft.cuh` - cuFFT Wrapper
+        - `cuda_cooley_tukey.h` - Cooley-Tukey implementation using CUDA with device code sources below.
+        - `cuda_cooley_tukey_device.cu`     
+        - `cuda_cooley_tukey_device.cuh`   
     - `tests` - GTests for correctness and Google Benchmark for performance
       - `ft_analytical_tests.cpp` - Correctness tests based on analytical properties of Fourier Transform.    
       - `ft_performance_tests.cpp` - Performance tests for random input.
