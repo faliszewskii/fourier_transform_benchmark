@@ -19,9 +19,13 @@ Times for GPU implementations include copying data to and from the device.
 <img height="380" alt="items" src="https://github.com/user-attachments/assets/c8ed5d8e-c128-4675-be3f-b3febe742814" />
 </p>
 
+### CPU implementations
+
 The charts above show how big is the difference between the naive approach O(N^2) and Fast Fourier Transforms O(NlogN). 
 
 OpenMP optimization of Cooley Tukey FFT is lagging behind at the small data sizes because of thread parallelization overhead but easily overtakes classic FFT implementation coming close to the most optimized FFTW library implementation. The best approach seems to be a hybrid approach using single threaded implementations for small N  with parallelization beginning at N=~2^16.
+
+### GPU implementations
 
 CUDA implementations face simillar parallelization overhead that eventually amortizes for bigger N. Even then, Cooley-Tukey implementation in CUDA is faster than OpenMP implementation with added benefit of steady data throughput on tested input size range.
 
@@ -85,6 +89,13 @@ pip install -r ../python/requirements.txt
 python ../python/plot_benchmark.py
 ```
 
+## TODO
+
+- [ ] Improve CUDA implementation:
+  - Incorporate shared memory
+  - Incorporate coalesced memory reads.
+- [ ] Research [Stockham FFT](https://cs.stackexchange.com/q/161545) for GPU implementation
+
 ## Project Structure
 
   - `benchmarks` - Json results of Google Benchmark
@@ -111,3 +122,8 @@ python ../python/plot_benchmark.py
     - `get_latest_stamp.py` - for a given directory returns the file with the latest time stamp in the name.
     - `plot_benchmark.py` - Given a Google Benchmark json file plot time/N and items/s/N.
 
+### References
+
+- [Lecture on Fast Fourier Transform - FFT](https://home.agh.edu.pl/~kkowal/DSP/FFT_wyklad.pdf) - dr inż. Konrad Kowalczyk
+- Matteo Frigo and Steven G. Johnson, "The Design and Implementation of FFTW3," Proceedings of the IEEE 93 (2), 216–231 (2005). Invited paper, Special Issue on Program Generation, Optimization, and Platform Adaptation.
+- D. B. Lloyd, C. Boyd and N. Govindaraju, "Fast computation of general Fourier Transforms on GPUS," 2008 IEEE International Conference on Multimedia and Expo, Hannover, Germany, 2008, pp. 5-8, doi: 10.1109/ICME.2008.4607357.
