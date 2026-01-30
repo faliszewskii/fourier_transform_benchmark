@@ -1,9 +1,9 @@
 # Fast Fourier Transform C++ Benchmark
 
 Benchmark of the following Fourier Transform implementations in C++:
-- C/C++ FFTW library,
+- C/C++ FFTW library [2],
 - Naive DFT running in O(N^2) time,
-- Cooley Tukey Fast Fourier Transform,
+- Cooley Tukey Fast Fourier Transform [1],
 - Cooley Tukey FFT with OpenMP multithreaded optimization.
 - Cooley Tukey FFT CUDA implementation
 - Nvidia cuFFT library
@@ -94,7 +94,7 @@ python ../python/plot_benchmark.py
 - [ ] Improve CUDA implementation:
   - Incorporate shared memory
   - Incorporate coalesced memory reads.
-- [ ] Research [Stockham FFT](https://cs.stackexchange.com/q/161545) for GPU implementation
+- [ ] Research [Stockham FFT](https://cs.stackexchange.com/q/161545) for GPU implementation [6]
 
 ## Project Structure
 
@@ -124,6 +124,6 @@ python ../python/plot_benchmark.py
 
 ### References
 
-- [Lecture on Fast Fourier Transform - FFT](https://home.agh.edu.pl/~kkowal/DSP/FFT_wyklad.pdf) - dr inż. Konrad Kowalczyk
-- Matteo Frigo and Steven G. Johnson, "The Design and Implementation of FFTW3," Proceedings of the IEEE 93 (2), 216–231 (2005). Invited paper, Special Issue on Program Generation, Optimization, and Platform Adaptation.
-- D. B. Lloyd, C. Boyd and N. Govindaraju, "Fast computation of general Fourier Transforms on GPUS," 2008 IEEE International Conference on Multimedia and Expo, Hannover, Germany, 2008, pp. 5-8, doi: 10.1109/ICME.2008.4607357.
+- [1] [Lecture on Fast Fourier Transform - FFT](https://home.agh.edu.pl/~kkowal/DSP/FFT_wyklad.pdf) - dr inż. Konrad Kowalczyk
+- [2] Matteo Frigo and Steven G. Johnson, "The Design and Implementation of FFTW3," Proceedings of the IEEE 93 (2), 216–231 (2005). Invited paper, Special Issue on Program Generation, Optimization, and Platform Adaptation.
+- [3] D. B. Lloyd, C. Boyd and N. Govindaraju, "Fast computation of general Fourier Transforms on GPUS," 2008 IEEE International Conference on Multimedia and Expo, Hannover, Germany, 2008, pp. 5-8, doi: 10.1109/ICME.2008.4607357.
