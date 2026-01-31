@@ -66,7 +66,6 @@ __host__ void execute(Complex<Vt>* data, Complex<Vt>* weights, size_t N) {
         const size_t groupSize = N / groupCount;
         const size_t jump = groupSize / 2;
         calculateButterfly<<<blocksHalf, threads>>>(data, weights, N, groupCount, groupSize, jump);
-        cudaDeviceSynchronize();
     }
 }
 
