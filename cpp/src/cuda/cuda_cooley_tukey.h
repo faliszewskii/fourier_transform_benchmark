@@ -28,6 +28,7 @@ public:
         cudaMemcpy(d_in, h_in, sizeof(Complex) * N, cudaMemcpyHostToDevice);
 
         CudaCT::execute<Vt>(d_in, _d_weights, N);
+        cudaDeviceSynchronize();
 
         cudaMemcpy(h_out, d_in, sizeof(Complex) * N, cudaMemcpyDeviceToHost);
         cudaFree(d_in);
